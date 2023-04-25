@@ -1,0 +1,12 @@
+# listenAddress -- address to bind the server
+listenAddress: 0.0.0.0:8081
+# scrape_interval -- interval for scraping autosync status from target argocd in seconds
+scrape_interval: 5
+# argocd -- argocd settings
+argocd:
+  # argocd.instance -- argocd target instance
+  instance: 'localhost:8080'
+  # argocd.username -- username to be used for authentication to the argocd instance
+  username: 'admin'
+  # argocd.password -- password to be used for authentication to the argocd instance
+  password: 'hiQiU7XxmTvo2GDx'
