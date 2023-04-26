@@ -50,7 +50,14 @@ func readConfigFromFile(config_path string) (*ServeConfig, error) {
 	return &serve_config, nil
 }
 
-// @todo
 func readConfigFromEnv(config *ServeConfig) error {
+	username, exists := os.LookupEnv("ARGOCD_AUTH_USERNAME")
+	if exists {
+		config.Argocd.Username = username
+	}
+	password, exists := os.LookupEnv("ARGOCD_AUTH_PASSWORD")
+	if exists {
+		config.Argocd.Password = password
+	}
 	return nil
 }

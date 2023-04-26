@@ -1,1 +1,15 @@
-FROM scratch
+FROM golang:1.20.3 as builder
+
+WORKDIR /build
+
+COPY . /build
+
+RUN CGO_ENABLED=0 go build -o argocd-autosync-exporter cmd/serve/main.go
+
+FROM alpine:3.16
+
+COPY --from=builder /build/argocd-autosync-exporter /bin/argocd-autosync-exporter
+
+USER nobody
+ENTRYPOINT ["argocd-autosync-exporter"]
+CMD ["--config", "/etc/argocd-autosync-exporter/config.yaml"]

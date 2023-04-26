@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argocd-autosync-exporter
+  labels:
+    app: argocd-autosync-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: argocd-autosync-exporter
+  template:
+    metadata:
+      labels:
+        app: argocd-autosync-exporter
+    spec:
+      containers:
+        - name: exporter
+          image: argocd-autosync-exporter:0.0.1
+          resources:
+            limits:
+              cpu: 100m
+              memory: 256Mi
+          env:
+            - name: ARGOCD_AUTH_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: argocd-credentials
+                  key: username
+            - name: ARGOCD_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: argocd-credentials
+                  key: password
+          ports:
+            - name: metrics
+              containerPort: 8080
+              protocol: "TCP"
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: metrics
+          livenessProbe:
+            httpGet:
+              path: /metrics
+              port: metrics
+          volumeMounts:
+            - name: configuration
+              mountPath: /etc/argocd-autosync-exporter
+      volumes:
+        - name: configuration
+          configMap:
+            name: argocd-autosync-exporter
+            optional: false

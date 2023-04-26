@@ -1,0 +1,12 @@
+resources:
+  - ../base
+
+secretGenerator:
+  - envs:
+      - .env
+    name: argocd-credentials
+    type: Opaque
+
+patches:
+  - path: deployment.yaml
+  - path: configmap.yaml

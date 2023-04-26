@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argocd-autosync-exporter
+spec:
+  template:
+    spec:
+      containers:
+        - name: exporter
+          image: argocd-autosync-exporter:0.0.1
+          imagePullPolicy: Always
